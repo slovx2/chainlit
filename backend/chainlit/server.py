@@ -1711,6 +1711,53 @@ async def get_avatar(avatar_id: str):
     return await get_favicon()
 
 
+EXT_FILES_PATH = Path(os.getenv("EXT_FILES_PATH", ".extfiles"))
+
+
+@router.get("/project/extfiles/{file_path:path}")
+async def get_extfiles(
+    file_path: str,
+    current_user: UserParam,
+):
+    """Get a file from the session files directory."""
+    if not current_user:
+        raise HTTPException(
+            status_code=401,
+            detail="please login",
+        )
+
+    if Path(file_path).is_absolute():
+        raise HTTPException(
+            status_code=400,
+            detail=f"unauthorized file path {file_path}",
+        )
+
+    base_path = EXT_FILES_PATH.resolve()
+    try:
+        read_path = (base_path / file_path).resolve()
+    except (OSError, RuntimeError):
+        raise HTTPException(
+            status_code=400,
+            detail=f"unauthorized file path {file_path}",
+        )
+
+    try:
+        read_path.relative_to(base_path)
+    except ValueError:
+        raise HTTPException(
+            status_code=403,
+            detail=f"forbidden file path {file_path}",
+        )
+
+    if not read_path.exists() or not read_path.is_file():
+        raise HTTPException(
+            status_code=404,
+            detail=f"file not found {file_path}",
+        )
+
+    return FileResponse(read_path, filename=read_path.name)
+
+
 @router.head("/")
 def status_check():
     """Check if the site is operational."""
