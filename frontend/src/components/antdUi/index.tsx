@@ -1,4 +1,5 @@
-import { message,Modal, Button,Upload  } from 'antd';
+//引入antd组件
+import { message, Modal, Button, Upload } from 'antd';
 export {
   message as AntdMessage,
   Modal as AntdModal,
