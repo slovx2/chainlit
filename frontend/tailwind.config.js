@@ -3,7 +3,12 @@ import animate from 'tailwindcss-animate';
 
 export default {
   darkMode: ['class'],
-  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
+  content: [
+    './index.html',
+    './src/**/*.{ts,tsx,js,jsx}',
+    '../../public/elements/**/*.{js,jsx}',
+    '../../frontend/src/elements/**/*.{ts,tsx,js,jsx}'// 扫描自定义元素
+  ],
   theme: {
     extend: {
       borderRadius: {
