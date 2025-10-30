@@ -8,6 +8,7 @@ import * as Zod from 'zod';
 import * as ChainlitReactClient from '@chainlit/react-client';
 
 import * as Markdown from '@/components/Markdown';
+import * as AntdComponents from '@/components/antdUi/index';
 import * as AccordionComponents from '@/components/ui/accordion';
 import * as AspectRatioComponents from '@/components/ui/aspect-ratio';
 import * as AvatarComponents from '@/components/ui/avatar';
@@ -73,7 +74,8 @@ const Imports = {
   '@/components/ui/switch': SwitchComponents,
   '@/components/ui/table': TableComponents,
   '@/components/ui/textarea': TextareaComponents,
-  '@/components/ui/tooltip': TooltipComponents
+  '@/components/ui/tooltip': TooltipComponents,
+  '@/components/antdUi/index': AntdComponents
 };
 
 export default Imports;
