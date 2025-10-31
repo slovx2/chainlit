@@ -21,6 +21,8 @@ declare global {
       light: Record<string, string>;
       dark: Record<string, string>;
     };
+    React?: typeof import('react');
+    ReactDOM?: typeof import('react-dom');
   }
 }
 
