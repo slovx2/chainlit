@@ -35,6 +35,17 @@ if TYPE_CHECKING:
 
 
 class SQLAlchemyDataLayer(BaseDataLayer):
+    @staticmethod
+    def _parse_json_field(value):
+        if value is None:
+            return None
+        if isinstance(value, str):
+            try:
+                return json.loads(value)
+            except (json.JSONDecodeError, ValueError):
+                return value  # 如果解析失败，返回原值
+        return value
+
     def __init__(
         self,
         conninfo: str,
@@ -682,8 +693,8 @@ class SQLAlchemyDataLayer(BaseDataLayer):
                     name=thread["thread_name"],
                     userId=thread["user_id"],
                     userIdentifier=thread["user_identifier"],
-                    tags=thread["thread_tags"],
-                    metadata=thread["thread_metadata"],
+                    tags=self._parse_json_field(thread["thread_tags"]),
+                    metadata=self._parse_json_field(thread["thread_metadata"]),
                     steps=[],
                     elements=[],
                 )
@@ -769,7 +780,7 @@ class SQLAlchemyDataLayer(BaseDataLayer):
                         autoPlay=element.get("element_autoPlay"),
                         playerConfig=element.get("element_playerconfig"),
                         page=element.get("element_page"),
-                        props=element.get("props", "{}"),
+                        props=self._parse_json_field(element.get("props", "{}")),
                         forId=element.get("element_forid"),
                         mime=element.get("element_mime"),
                     )
